@@ -18,7 +18,18 @@
     scroll-margin-top:135px; /*height of navbar*/
     display:inline-block;
     width:100%;
+    padding-bottom:25px;
 }
+
+#section-4{
+    background-image: url("images/bg-image-sec2.jpg");
+    color: white;
+    display:inline-block;
+    scroll-margin-top:135px; /*height of navbar*/
+    width:100%;
+}
+
+
 
 #top-logo{
     max-width:400px;
