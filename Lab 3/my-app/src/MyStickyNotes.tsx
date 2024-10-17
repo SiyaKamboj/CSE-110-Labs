@@ -112,9 +112,9 @@ export const MyStickyNotes = () => {
               </button>
               <button onClick={() => setNotes((notes) => notes.filter((item) => item.title !== note.title)) }>x</button>
             </div>
-            <h2 contentEditable>{note.title}</h2>
-            <p contentEditable>{note.content}</p>
-            <p contentEditable>{note.label}</p>
+            <h2 contentEditable data-testid={`note-title-${note.id}`}>{note.title}</h2>
+            <p contentEditable data-testid={`note-content-${note.id}`}>{note.content}</p>
+            <p contentEditable data-testid={`note-label-${note.id}`}>{note.label}</p>
           </div>
         ))}
       </div>
