@@ -91,7 +91,7 @@ export const MyStickyNotes = () => {
           	setCreateNote({ ...createNote, content: event.target.value })}
         name="content" placeholder="Note Content" required /></div>
 
-        <select name="noteLabel" onChange={(event) =>
+        <select data-testid="note-label-dropdown" name="noteLabel" onChange={(event) =>
          	setCreateNote({ ...createNote, label: event.target.value as Label})}
           id="noteLabel">
           <option value={Label.personal}>Personal</option>

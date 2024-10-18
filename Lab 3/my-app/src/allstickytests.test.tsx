@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MyStickyNotes } from "./MyStickyNotes";
 import { dummyNotesList } from "./constants";
+import { Label } from "./types";
 
 describe("Create StickyNote", () => {
  test("renders create note form", () => {
@@ -30,7 +31,25 @@ describe("Create StickyNote", () => {
 
    expect(newNoteTitle).toBeInTheDocument();
    expect(newNoteContent).toBeInTheDocument();
- });
+ }), 
+
+ test("what you put in form matches what is in the sticky note", () => {
+  render(<MyStickyNotes />);
+
+  const titleInput = screen.getByPlaceholderText("Note Title");
+  const contentInput = screen.getByPlaceholderText("Note Content");
+  const dropdown = screen.getByTestId("note-label-dropdown");
+  const createNoteButton = screen.getByText("Create Note");
+
+  fireEvent.change(titleInput, { target: { value: "Test Note" } });
+  fireEvent.change(contentInput, { target: { value: "Test Content" } });
+  fireEvent.change(dropdown, { target: { value: Label.study } });
+  fireEvent.click(createNoteButton);
+
+  expect(screen.getByText("Test Note")).toBeInTheDocument();
+  expect(screen.getByText("Test Content")).toBeInTheDocument();
+  expect(screen.getByText("Study")).toBeInTheDocument();
+  });
 });
 
 
@@ -90,6 +109,27 @@ describe("Delete StickyNote", () => {
       expect(screen.queryByText(dummyNotesList[index].content)).not.toBeInTheDocument();
       index++;
     });
+  }), 
+  //ensures rest of the ntoes are intact. this was added by me
+  test("leaves other non-deleted notes intact", () => {
+    render(<MyStickyNotes/>);
+    for (let i = 0; i < dummyNotesList.length - 1; i++) {
+      const firstNoteTitle = screen.getByText(dummyNotesList[i].title);
+      expect(firstNoteTitle).toBeInTheDocument();
+  
+      // notes apparently reorder after deleting so always delete the first note
+      fireEvent.click(screen.getAllByText("x")[0]);
+  
+      // cant use getByText because it is deleted so would result in error
+      expect(screen.queryByText(dummyNotesList[i].title)).not.toBeInTheDocument();
+  
+      //check all following notes exist
+      for (let j = i + 1; j < dummyNotesList.length; j++) {
+        const remainingNoteTitle = screen.getByText(dummyNotesList[j].title);
+        expect(remainingNoteTitle).toBeInTheDocument();
+      }
+    }
   });
 });
+
 
